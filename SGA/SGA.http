@@ -1,0 +1,60 @@
+@SGA_HostAddress = http://localhost:5046
+
+### Crear plantilla manual (sólo metadata)
+POST {{SGA_HostAddress}}/api/plantillas
+Content-Type: application/json
+
+{
+  "nombre": "Plantilla Acción Personal",
+  "descripcion": "Formato base RRHH",
+  "estadoPlantillaId": 1,
+  "creadoPorUsuarioId": 1
+}
+
+### Importar plantilla desde archivo .docx (Content Controls / SDT)
+# Reemplaza la ruta del archivo binario por una real (puedes pegar el path local).
+POST {{SGA_HostAddress}}/api/plantillas/importar-docx
+Content-Type: multipart/form-data; boundary=BOUNDARY
+
+--BOUNDARY
+Content-Disposition: form-data; name="estadoPlantillaId"
+
+1
+--BOUNDARY
+Content-Disposition: form-data; name="creadoPorUsuarioId"
+
+1
+--BOUNDARY
+Content-Disposition: form-data; name="descripcion"
+
+Plantilla base RRHH
+--BOUNDARY
+Content-Disposition: form-data; name="archivo"; filename="formato_accion_personal.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+< C:\\Users\\David\\Desktop\\formato_accion_personal.docx
+--BOUNDARY--
+
+### Importar plantilla desde archivo .rtf (marcadores {{...}} o <<...>>)
+# El RTF debe contener marcadores tipo {{nombre_completo}} o <<fecha_inicio>> en el texto.
+POST {{SGA_HostAddress}}/api/plantillas/importar-docx
+Content-Type: multipart/form-data; boundary=BOUNDARY
+
+--BOUNDARY
+Content-Disposition: form-data; name="estadoPlantillaId"
+
+1
+--BOUNDARY
+Content-Disposition: form-data; name="creadoPorUsuarioId"
+
+1
+--BOUNDARY
+Content-Disposition: form-data; name="descripcion"
+
+Plantilla RTF de prueba
+--BOUNDARY
+Content-Disposition: form-data; name="archivo"; filename="plantilla_prueba.rtf"
+Content-Type: application/rtf
+
+< C:\\Users\\David\\Desktop\\plantilla_prueba.rtf
+--BOUNDARY--
