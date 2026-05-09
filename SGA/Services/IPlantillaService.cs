@@ -4,7 +4,9 @@ namespace SGA.Services;
 
 public interface IPlantillaService
 {
-    Task<PlantillaResponse> CrearAsync(CrearPlantillaRequest request, CancellationToken cancellationToken = default);
+    Task<PlantillaResponse> CrearAsync(
+        CrearPlantillaRequest request,
+        CancellationToken cancellationToken = default);
 
     Task<ImportarPlantillaResponse> ImportarDocxAsync(
         Stream docxStream,
@@ -14,4 +16,6 @@ public interface IPlantillaService
         int estadoPlantillaId,
         int creadoPorUsuarioId,
         CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<object>> GetAllAsync();
 }
