@@ -14,6 +14,8 @@ public class Usuario
 
     [Required, MaxLength(150)]
     public string NombreCompleto { get; set; } = string.Empty;
+    public int? SedeId { get; set; }
+    public Sede? Sede { get; set; }
 
     [Required, MaxLength(150), EmailAddress]
     public string Correo { get; set; } = string.Empty;

@@ -113,4 +113,20 @@ public class PlantillasController : ControllerBase
 
         return Ok(plantillas);
     }
+
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(PlantillaResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Actualizar(
+    int id,
+    [FromBody] ActualizarPlantillaRequest request,
+    CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+            return ValidationProblem(ModelState);
+
+        var resp = await _service.ActualizarAsync(id, request, cancellationToken);
+        return Ok(resp);
+    }
 }

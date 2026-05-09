@@ -18,4 +18,6 @@ public interface IPlantillaService
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<object>> GetAllAsync();
+
+    Task<PlantillaResponse> ActualizarAsync(int plantillaId, ActualizarPlantillaRequest request, CancellationToken cancellationToken = default);
 }
