@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SGA.Identity;
 using SGA.Models;
 
 namespace SGA.Data;
 
-public class SgaDbContext : DbContext
+public class SgaDbContext : IdentityDbContext<AppIdentityUser>
 {
     public SgaDbContext(DbContextOptions<SgaDbContext> options) : base(options)
     {
@@ -19,6 +21,7 @@ public class SgaDbContext : DbContext
     public DbSet<DocumentoLlenado> DocumentosLlenados => Set<DocumentoLlenado>();
     public DbSet<ValorCampo> ValoresCampo => Set<ValorCampo>();
     public DbSet<ArchivoEvidencia> ArchivosEvidencia => Set<ArchivoEvidencia>();
+    public DbSet<Sede> Sedes => Set<Sede>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -74,6 +77,19 @@ public class SgaDbContext : DbContext
                   .WithMany(r => r.Usuarios)
                   .HasForeignKey(e => e.RolId)
                   .OnDelete(DeleteBehavior.Restrict);
+
+           entity.HasOne(e => e.Sede)
+          .WithMany(s => s.Usuarios)
+          .HasForeignKey(e => e.SedeId)
+          .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Sede>(entity =>
+        {
+            entity.ToTable("Sede");
+            entity.HasKey(e => e.SedeId);
+            entity.HasIndex(e => e.Nombre).IsUnique();
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime2");
         });
 
         modelBuilder.Entity<Plantilla>(entity =>

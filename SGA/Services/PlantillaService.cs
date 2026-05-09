@@ -273,4 +273,44 @@ public async Task<IEnumerable<object>> GetAllAsync()
 
     return plantillas;
 }
+
+    public async Task<PlantillaResponse> ActualizarAsync(int plantillaId, ActualizarPlantillaRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var plantilla = await _db.Plantillas
+            .FirstOrDefaultAsync(p => p.PlantillaId == plantillaId, cancellationToken);
+
+        if (plantilla is null)
+            throw new EntidadNoEncontradaException($"No existe la Plantilla con Id {plantillaId}.");
+
+        // Validar que el nuevo estado exista
+        var estadoExiste = await _db.EstadosPlantilla
+            .AsNoTracking()
+            .AnyAsync(e => e.EstadoPlantillaId == request.EstadoPlantillaId, cancellationToken);
+
+        if (!estadoExiste)
+            throw new EntidadNoEncontradaException($"No existe el EstadoPlantilla con Id {request.EstadoPlantillaId}.");
+
+        plantilla.Nombre = request.Nombre.Trim();
+        plantilla.Descripcion = request.Descripcion?.Trim();
+        plantilla.EstadoPlantillaId = request.EstadoPlantillaId;
+        plantilla.Activa = request.Activa;
+        plantilla.FechaActualizacion = DateTime.UtcNow;
+
+        await _db.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Plantilla {PlantillaId} actualizada.", plantillaId);
+
+        return new PlantillaResponse
+        {
+            PlantillaId = plantilla.PlantillaId,
+            Nombre = plantilla.Nombre,
+            Descripcion = plantilla.Descripcion,
+            EstadoPlantillaId = plantilla.EstadoPlantillaId,
+            CreadoPorUsuarioId = plantilla.CreadoPorUsuarioId,
+            StoragePath = plantilla.RutaArchivoWord,
+            FechaCreacion = plantilla.FechaCreacion,
+        };
+    }
 }
