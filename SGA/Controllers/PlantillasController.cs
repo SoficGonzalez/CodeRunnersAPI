@@ -103,5 +103,14 @@ public class PlantillasController : ControllerBase
             cancellationToken);
 
         return StatusCode(StatusCodes.Status201Created, resp);
-    }
+}
+
+[HttpGet]
+[ProducesResponseType(StatusCodes.Status200OK)]
+public async Task<IActionResult> GetPlantillas()
+{
+    var plantillas = await _service.GetAllAsync();
+
+    return Ok(plantillas);
+}
 }
