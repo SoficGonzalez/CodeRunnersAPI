@@ -259,6 +259,7 @@ public class PlantillaService : IPlantillaService
 public async Task<IEnumerable<object>> GetAllAsync()
 {
     var plantillas = await _db.Plantillas
+        .Include(p => p.EstadoPlantilla)
         .Select(p => new
         {
             plantillaId = p.PlantillaId,
