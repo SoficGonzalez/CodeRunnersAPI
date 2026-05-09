@@ -256,4 +256,20 @@ public class PlantillaService : IPlantillaService
                 $"No existe el Usuario con Id {usuarioId}.");
         }
     }
+public async Task<IEnumerable<object>> GetAllAsync()
+{
+    var plantillas = await _db.Plantillas
+        .Select(p => new
+        {
+            plantillaId = p.PlantillaId,
+            nombre = p.Nombre,
+            descripcion = p.Descripcion,
+            estadoActual = p.EstadoPlantilla.Nombre,
+            fechaCreacion = p.FechaCreacion,
+            activa = p.Activa
+        })
+        .ToListAsync();
+
+    return plantillas;
+}
 }
