@@ -129,4 +129,11 @@ public class PlantillasController : ControllerBase
         var resp = await _service.ActualizarAsync(id, request, cancellationToken);
         return Ok(resp);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Obtener(int id, CancellationToken cancellationToken)
+    {
+        var result = await _service.ObtenerPorIdAsync(id, cancellationToken);
+        return Ok(result);
+    }
 }

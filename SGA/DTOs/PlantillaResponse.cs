@@ -9,4 +9,12 @@ public class PlantillaResponse
     public int CreadoPorUsuarioId { get; set; }
     public string? StoragePath { get; set; }
     public DateTime FechaCreacion { get; set; }
+
+    public class CampoPlantillaDto
+    {
+        public int CampoPlantillaId { get; set; }
+        public string ClaveCampo { get; set; } = string.Empty;
+        public string EtiquetaPantalla { get; set; } = string.Empty;
+        public int Orden { get; set; }
+    }
 }
