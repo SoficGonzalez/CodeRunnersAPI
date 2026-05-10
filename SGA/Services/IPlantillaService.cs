@@ -20,4 +20,6 @@ public interface IPlantillaService
     Task<IEnumerable<object>> GetAllAsync();
 
     Task<PlantillaResponse> ActualizarAsync(int plantillaId, ActualizarPlantillaRequest request, CancellationToken cancellationToken = default);
+
+    Task<PlantillaResponse> ActualizarParcialAsync(int plantillaId, ActualizarParcialPlantillaRequest request, CancellationToken cancellationToken = default);
 }
