@@ -122,6 +122,13 @@ public class PlantillasController : ControllerBase
         return Ok(resp);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Obtener(int id, CancellationToken cancellationToken)
+    {
+        var result = await _service.ObtenerPorIdAsync(id, cancellationToken);
+        return Ok(result);
+    }
+
     [HttpPatch("{id:int}")]
     [ProducesResponseType(typeof(PlantillaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -138,3 +145,4 @@ public class PlantillasController : ControllerBase
         return Ok(resp);
     }
 }
+
