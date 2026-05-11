@@ -274,6 +274,47 @@ public async Task<IEnumerable<object>> GetAllAsync()
     return plantillas;
 }
 
+    public async Task<PlantillaDetalleResponse> ObtenerPorIdAsync(
+        int id,
+        CancellationToken cancellationToken = default)
+    {
+        var plantilla = await _db.Plantillas
+            .AsNoTracking()
+            .Include(p => p.EstadoPlantilla)
+            .Include(p => p.Campos)
+            .FirstOrDefaultAsync(p => p.PlantillaId == id, cancellationToken);
+
+        if (plantilla is null)
+            throw new EntidadNoEncontradaException($"No existe la Plantilla con Id {id}.");
+
+        return new PlantillaDetalleResponse
+        {
+            PlantillaId = plantilla.PlantillaId,
+            Nombre = plantilla.Nombre,
+            Descripcion = plantilla.Descripcion,
+            EstadoPlantillaId = plantilla.EstadoPlantillaId,
+            EstadoActual = plantilla.EstadoPlantilla.Nombre,
+            CreadoPorUsuarioId = plantilla.CreadoPorUsuarioId,
+            StoragePath = plantilla.RutaArchivoWord,
+            Activa = plantilla.Activa,
+            FechaCreacion = plantilla.FechaCreacion,
+            FechaActualizacion = plantilla.FechaActualizacion,
+            Campos = plantilla.Campos
+                .OrderBy(c => c.Orden)
+                .Select(c => new CampoPlantillaDetalleResponse
+                {
+                    CampoPlantillaId = c.CampoPlantillaId,
+                    ClaveCampo = c.ClaveCampo,
+                    EtiquetaPantalla = c.EtiquetaPantalla,
+                    Orden = c.Orden,
+                    Obligatorio = c.Obligatorio,
+                    TipoDato = c.TipoDato,
+                    ValorPorDefecto = c.ValorPorDefecto
+                })
+                .ToList()
+        };
+    }
+
     public async Task<PlantillaResponse> ActualizarAsync(int plantillaId, ActualizarPlantillaRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
