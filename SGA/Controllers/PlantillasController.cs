@@ -46,6 +46,7 @@ public class PlantillasController : ControllerBase
         return CreatedAtAction(nameof(Crear), new { id = resp.PlantillaId }, resp);
     }
 
+
     /// <summary>
     /// Importa una plantilla a partir de un archivo de Word (.docx) o RTF (.rtf).
     /// - Para .docx detecta los Content Controls (SDT) del documento.
@@ -105,15 +106,6 @@ public class PlantillasController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, resp);
     }
 
-    [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPlantillas()
-    {
-        var plantillas = await _service.GetAllAsync();
-
-        return Ok(plantillas);
-    }
-
     [HttpPut("{id:int}")]
     [ProducesResponseType(typeof(PlantillaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -136,4 +128,21 @@ public class PlantillasController : ControllerBase
         var result = await _service.ObtenerPorIdAsync(id, cancellationToken);
         return Ok(result);
     }
+
+    [HttpPatch("{id:int}")]
+    [ProducesResponseType(typeof(PlantillaResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ActualizarParcial(
+        int id,
+        [FromBody] ActualizarParcialPlantillaRequest request,
+        CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+            return ValidationProblem(ModelState);
+
+        var resp = await _service.ActualizarParcialAsync(id, request, cancellationToken);
+        return Ok(resp);
+    }
 }
+
