@@ -70,6 +70,9 @@ builder.Services.AddScoped<IRtfTemplateParser, RtfTemplateParser>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IPlantillaService, PlantillaService>();
 builder.Services.AddScoped<ISedeService, SedeService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IRolService, RolService>();
+builder.Services.AddScoped<IEstadoPlantillaService, EstadoPlantillaService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 

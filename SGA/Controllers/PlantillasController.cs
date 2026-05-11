@@ -121,6 +121,7 @@ public class PlantillasController : ControllerBase
         var resp = await _service.ActualizarAsync(id, request, cancellationToken);
         return Ok(resp);
     }
+    /*
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Obtener(int id, CancellationToken cancellationToken)
@@ -128,21 +129,6 @@ public class PlantillasController : ControllerBase
         var result = await _service.ObtenerPorIdAsync(id, cancellationToken);
         return Ok(result);
     }
-
-    [HttpPatch("{id:int}")]
-    [ProducesResponseType(typeof(PlantillaResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ActualizarParcial(
-        int id,
-        [FromBody] ActualizarParcialPlantillaRequest request,
-        CancellationToken cancellationToken)
-    {
-        if (!ModelState.IsValid)
-            return ValidationProblem(ModelState);
-
-        var resp = await _service.ActualizarParcialAsync(id, request, cancellationToken);
-        return Ok(resp);
-    }
+    */
 }
 
