@@ -20,5 +20,5 @@ public interface IPlantillaService
     Task<IEnumerable<object>> GetAllAsync();
 
     Task<PlantillaResponse> ActualizarAsync(int plantillaId, ActualizarPlantillaRequest request, CancellationToken cancellationToken = default);
-    Task<PlantillaDetalleResponse> ObtenerPorIdAsync(int id, CancellationToken cancellationToken = default);
+    //Task<PlantillaDetalleResponse> ObtenerPorIdAsync(int id, CancellationToken cancellationToken = default);
 }
